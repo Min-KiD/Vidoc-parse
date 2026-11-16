@@ -1,0 +1,20 @@
+# Whitelist: the pipeline, its docs, setup and two example pages.
+# Documents and everything read from them (data/), environments, model caches, logs and .env stay local.
+/*
+!/.gitignore
+!/.env.example
+!/README.md
+!/FINDINGS.md
+!/architecture_design.md
+!/requirements.txt
+!/setup.sh
+!/tables/
+!/examples/
+
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log
+*.pdf
+*.png
+.env

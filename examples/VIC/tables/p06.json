@@ -1,0 +1,422 @@
+{
+"page": 6,
+"tables": [
+{
+"title": "Đơn vị tính: Triệu VND",
+"bbox": [
+149,
+344,
+1512,
+1479
+],
+"header_rows": [
+0
+],
+"roles": [
+"code",
+"label",
+"note",
+"value",
+"value"
+],
+"rows": [
+[
+"Mã số",
+"TÀI SẢN",
+"Thuyết minh",
+"Số cuối kỳ",
+"Số đầu kỳ"
+],
+[
+"100",
+"A. TÀI SẢN NGẮN HẠN",
+"",
+"590.641.891",
+"396.479.911"
+],
+[
+"110",
+"I. Tiền và các khoản tương đương tiền",
+"4",
+"72.150.719",
+"42.582.366"
+],
+[
+"111",
+"1. Tiền",
+"",
+"52.451.984",
+"32.332.352"
+],
+[
+"112",
+"2. Các khoản tương đương tiền",
+"",
+"19.698.735",
+"10.250.014"
+],
+[
+"120",
+"II. Đầu tư tài chính ngắn hạn",
+"5",
+"7.918.430",
+"8.718.884"
+],
+[
+"121",
+"1. Chứng khoán kinh doanh",
+"",
+"-",
+"3.628.250"
+],
+[
+"123",
+"2. Đầu tư nắm giữ đến ngày đáo hạn",
+"",
+"7.918.430",
+"5.090.634"
+],
+[
+"130",
+"III. Các khoản phải thu ngắn hạn",
+"",
+"267.274.537",
+"190.046.565"
+],
+[
+"131",
+"1. Phải thu ngắn hạn của khách hàng",
+"6",
+"29.339.826",
+"29.080.916"
+],
+[
+"132",
+"2. Trả trước cho người bán ngắn hạn",
+"",
+"72.962.931",
+"40.937.213"
+],
+[
+"135",
+"3. Phải thu về cho vay ngắn hạn",
+"7",
+"24.092.071",
+"1.478.525"
+],
+[
+"136",
+"4. Phải thu ngắn hạn khác",
+"8",
+"141.791.491",
+"119.255.260"
+],
+[
+"137",
+"5. Dự phòng phải thu ngắn hạn khó đòi",
+"",
+"(911.782)",
+"(705.349)"
+],
+[
+"140",
+"IV. Hàng tồn kho",
+"9",
+"185.624.958",
+"114.090.183"
+],
+[
+"141",
+"1. Hàng tồn kho",
+"",
+"199.871.279",
+"127.068.459"
+],
+[
+"149",
+"2. Dự phòng giảm giá hàng tồn kho",
+"",
+"(14.246.321)",
+"(12.978.276)"
+],
+[
+"150",
+"V. Tài sản ngắn hạn khác",
+"",
+"57.673.247",
+"41.041.913"
+],
+[
+"151",
+"1. Chi phí trả trước ngắn hạn",
+"10",
+"4.878.936",
+"4.592.399"
+],
+[
+"152",
+"2. Thuế GTGT được khấu trừ",
+"",
+"13.202.119",
+"10.199.557"
+],
+[
+"153",
+"3. Thuế và các khoản khác phải thu Nhà nước",
+"",
+"207.729",
+"312.596"
+],
+[
+"155",
+"4. Tài sản ngắn hạn khác",
+"11",
+"39.384.463",
+"25.937.361"
+]
+],
+"text_source": [
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"gemini",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"gemini",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"gemini",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+]
+],
+"mineru_rows": [
+[
+0
+],
+[
+1
+],
+[
+2
+],
+[
+3
+],
+[
+4
+],
+[
+5
+],
+[
+6
+],
+[
+7
+],
+[
+8
+],
+[
+9
+],
+[
+10
+],
+[
+11
+],
+[
+12
+],
+[
+13
+],
+[
+14
+],
+[
+15
+],
+[
+16
+],
+[
+17
+],
+[
+18
+],
+[
+19
+],
+[
+20
+],
+[
+21
+]
+]
+}
+],
+"flags": [
+{
+"table": 0,
+"row": 13,
+"col": 1,
+"kind": "text_diff",
+"mineru": "5. Dự phòng phải thu ngắn hạn khó đòii",
+"gemini": "5. Dự phòng phải thu ngắn hạn khó đòi"
+}
+],
+"changes": [],
+"rows_joined": {
+"amounts": 21,
+"position": 1,
+"regroup": 0,
+"text": 0,
+"total": 22
+}
+}

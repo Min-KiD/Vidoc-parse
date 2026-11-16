@@ -1,0 +1,211 @@
+{
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "in": 1258,
+  "out": 1199,
+  "thoughts": null,
+  "total": 2457
+ },
+ "raw": "{\"tables\": [{\"title\": \"Tập đoàn Vingroup – Công ty CP\\nBẢNG CÂN ĐỐI KẾ TOÁN HỢP NHẤT\\nNgày 30 tháng 9 năm 2025\", \"unit\": \"Triệu VND\", \"columns\": [\"Số cuối kỳ\", \"Số đầu kỳ\"], \"rows\": [{\"label\": \"A. TÀI SẢN NGẮN HẠN\", \"code\": \"100\", \"note\": null, \"cells\": [\"590.641.891\", \"396.479.911\"]}, {\"label\": \"I. Tiền và các khoản tương đương tiền\", \"code\": \"110\", \"note\": \"4\", \"cells\": [\"72.150.719\", \"42.582.366\"]}, {\"label\": \"1. Tiền\", \"code\": \"111\", \"note\": null, \"cells\": [\"52.451.984\", \"32.332.352\"]}, {\"label\": \"2. Các khoản tương đương tiền\", \"code\": \"112\", \"note\": null, \"cells\": [\"19.698.735\", \"10.250.014\"]}, {\"label\": \"II. Đầu tư tài chính ngắn hạn\", \"code\": \"120\", \"note\": \"5\", \"cells\": [\"7.918.430\", \"8.718.884\"]}, {\"label\": \"1. Chứng khoán kinh doanh\", \"code\": \"121\", \"note\": null, \"cells\": [\"-\", \"3.628.250\"]}, {\"label\": \"2. Đầu tư nắm giữ đến ngày đáo hạn\", \"code\": \"123\", \"note\": null, \"cells\": [\"7.918.430\", \"5.090.634\"]}, {\"label\": \"III. Các khoản phải thu ngắn hạn\", \"code\": \"130\", \"note\": null, \"cells\": [\"267.274.537\", \"190.046.565\"]}, {\"label\": \"1. Phải thu ngắn hạn của khách hàng\", \"code\": \"131\", \"note\": \"6\", \"cells\": [\"29.339.826\", \"29.080.916\"]}, {\"label\": \"2. Trả trước cho người bán ngắn hạn\", \"code\": \"132\", \"note\": null, \"cells\": [\"72.962.931\", \"40.937.213\"]}, {\"label\": \"3. Phải thu về cho vay ngắn hạn\", \"code\": \"135\", \"note\": \"7\", \"cells\": [\"24.092.071\", \"1.478.525\"]}, {\"label\": \"4. Phải thu ngắn hạn khác\", \"code\": \"136\", \"note\": \"8\", \"cells\": [\"141.791.491\", \"119.255.260\"]}, {\"label\": \"5. Dự phòng phải thu ngắn hạn khó đòi\", \"code\": \"137\", \"note\": null, \"cells\": [\"(911.782)\", \"(705.349)\"]}, {\"label\": \"IV. Hàng tồn kho\", \"code\": \"140\", \"note\": \"9\", \"cells\": [\"185.624.958\", \"114.090.183\"]}, {\"label\": \"1. Hàng tồn kho\", \"code\": \"141\", \"note\": null, \"cells\": [\"199.871.279\", \"127.068.459\"]}, {\"label\": \"2. Dự phòng giảm giá hàng tồn kho\", \"code\": \"149\", \"note\": null, \"cells\": [\"(14.246.321)\", \"(12.978.276)\"]}, {\"label\": \"V. Tài sản ngắn hạn khác\", \"code\": \"150\", \"note\": null, \"cells\": [\"57.673.247\", \"41.041.913\"]}, {\"label\": \"1. Chi phí trả trước ngắn hạn\", \"code\": \"151\", \"note\": \"10\", \"cells\": [\"4.878.936\", \"4.592.399\"]}, {\"label\": \"2. Thuế GTGT được khấu trừ\", \"code\": \"152\", \"note\": null, \"cells\": [\"13.202.119\", \"10.199.557\"]}, {\"label\": \"3. Thuế và các khoản khác phải thu Nhà nước\", \"code\": \"153\", \"note\": null, \"cells\": [\"207.729\", \"312.596\"]}, {\"label\": \"4. Tài sản ngắn hạn khác\", \"code\": \"155\", \"note\": \"11\", \"cells\": [\"39.384.463\", \"25.937.361\"]}]}]}",
+ "tables": [
+  {
+   "title": "Tập đoàn Vingroup – Công ty CP\nBẢNG CÂN ĐỐI KẾ TOÁN HỢP NHẤT\nNgày 30 tháng 9 năm 2025",
+   "unit": "Triệu VND",
+   "columns": [
+    "Số cuối kỳ",
+    "Số đầu kỳ"
+   ],
+   "rows": [
+    {
+     "label": "A. TÀI SẢN NGẮN HẠN",
+     "code": "100",
+     "note": null,
+     "cells": [
+      "590.641.891",
+      "396.479.911"
+     ]
+    },
+    {
+     "label": "I. Tiền và các khoản tương đương tiền",
+     "code": "110",
+     "note": "4",
+     "cells": [
+      "72.150.719",
+      "42.582.366"
+     ]
+    },
+    {
+     "label": "1. Tiền",
+     "code": "111",
+     "note": null,
+     "cells": [
+      "52.451.984",
+      "32.332.352"
+     ]
+    },
+    {
+     "label": "2. Các khoản tương đương tiền",
+     "code": "112",
+     "note": null,
+     "cells": [
+      "19.698.735",
+      "10.250.014"
+     ]
+    },
+    {
+     "label": "II. Đầu tư tài chính ngắn hạn",
+     "code": "120",
+     "note": "5",
+     "cells": [
+      "7.918.430",
+      "8.718.884"
+     ]
+    },
+    {
+     "label": "1. Chứng khoán kinh doanh",
+     "code": "121",
+     "note": null,
+     "cells": [
+      "-",
+      "3.628.250"
+     ]
+    },
+    {
+     "label": "2. Đầu tư nắm giữ đến ngày đáo hạn",
+     "code": "123",
+     "note": null,
+     "cells": [
+      "7.918.430",
+      "5.090.634"
+     ]
+    },
+    {
+     "label": "III. Các khoản phải thu ngắn hạn",
+     "code": "130",
+     "note": null,
+     "cells": [
+      "267.274.537",
+      "190.046.565"
+     ]
+    },
+    {
+     "label": "1. Phải thu ngắn hạn của khách hàng",
+     "code": "131",
+     "note": "6",
+     "cells": [
+      "29.339.826",
+      "29.080.916"
+     ]
+    },
+    {
+     "label": "2. Trả trước cho người bán ngắn hạn",
+     "code": "132",
+     "note": null,
+     "cells": [
+      "72.962.931",
+      "40.937.213"
+     ]
+    },
+    {
+     "label": "3. Phải thu về cho vay ngắn hạn",
+     "code": "135",
+     "note": "7",
+     "cells": [
+      "24.092.071",
+      "1.478.525"
+     ]
+    },
+    {
+     "label": "4. Phải thu ngắn hạn khác",
+     "code": "136",
+     "note": "8",
+     "cells": [
+      "141.791.491",
+      "119.255.260"
+     ]
+    },
+    {
+     "label": "5. Dự phòng phải thu ngắn hạn khó đòi",
+     "code": "137",
+     "note": null,
+     "cells": [
+      "(911.782)",
+      "(705.349)"
+     ]
+    },
+    {
+     "label": "IV. Hàng tồn kho",
+     "code": "140",
+     "note": "9",
+     "cells": [
+      "185.624.958",
+      "114.090.183"
+     ]
+    },
+    {
+     "label": "1. Hàng tồn kho",
+     "code": "141",
+     "note": null,
+     "cells": [
+      "199.871.279",
+      "127.068.459"
+     ]
+    },
+    {
+     "label": "2. Dự phòng giảm giá hàng tồn kho",
+     "code": "149",
+     "note": null,
+     "cells": [
+      "(14.246.321)",
+      "(12.978.276)"
+     ]
+    },
+    {
+     "label": "V. Tài sản ngắn hạn khác",
+     "code": "150",
+     "note": null,
+     "cells": [
+      "57.673.247",
+      "41.041.913"
+     ]
+    },
+    {
+     "label": "1. Chi phí trả trước ngắn hạn",
+     "code": "151",
+     "note": "10",
+     "cells": [
+      "4.878.936",
+      "4.592.399"
+     ]
+    },
+    {
+     "label": "2. Thuế GTGT được khấu trừ",
+     "code": "152",
+     "note": null,
+     "cells": [
+      "13.202.119",
+      "10.199.557"
+     ]
+    },
+    {
+     "label": "3. Thuế và các khoản khác phải thu Nhà nước",
+     "code": "153",
+     "note": null,
+     "cells": [
+      "207.729",
+      "312.596"
+     ]
+    },
+    {
+     "label": "4. Tài sản ngắn hạn khác",
+     "code": "155",
+     "note": "11",
+     "cells": [
+      "39.384.463",
+      "25.937.361"
+     ]
+    }
+   ]
+  }
+ ]
+}

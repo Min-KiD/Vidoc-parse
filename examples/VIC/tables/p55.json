@@ -1,0 +1,329 @@
+{
+"page": 55,
+"tables": [
+{
+"title": "Các khoản phải thu và phải trả lớn với các bên liên quan tại ngày 30 tháng 9 năm 2025 như sau:",
+"bbox": [
+194,
+588,
+1489,
+1930
+],
+"header_rows": [
+0,
+1
+],
+"roles": [
+"text",
+"text",
+"label",
+"value"
+],
+"rows": [
+[
+"Bên liên quan",
+"Mối quan hệ",
+"Nội dung nghiệp vụ",
+"Số tiền"
+],
+[
+"Phải thu ngắn hạn của khách hàng",
+"",
+"",
+""
+],
+[
+"Công ty Green Future",
+"Chịu sự kiểm soát chung",
+"Phải thu từ bán hàng và hoạt động khác",
+"449.455"
+],
+[
+"Công ty GSM",
+"Chịu sự kiểm soát chung",
+"Phải thu từ bán hàng",
+"2.110.078"
+],
+[
+"Công ty Vincom Retail",
+"Công ty liên kết",
+"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh",
+"309.427"
+],
+[
+"",
+"",
+"Phải thu từ cung cấp dịch vụ và hoạt động khác",
+"41.346"
+],
+[
+"Công ty Vận hành Vincom Retail",
+"Công ty liên kết",
+"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh",
+"194.426"
+],
+[
+"",
+"",
+"Phải thu khác",
+"45.599"
+],
+[
+"Công ty V-G",
+"Công ty liên doanh",
+"Phải thu từ hợp đồng xây dựng",
+"140.534"
+],
+[
+"Bên liên quan khác",
+"Các bên liên quan khác",
+"Phải thu khác",
+"88.679"
+],
+[
+"",
+"",
+"",
+"3.379.544"
+],
+[
+"Phải thu ngắn hạn khác",
+"",
+"",
+""
+],
+[
+"Công ty Novatech",
+"Chịu sự kiểm soát chung",
+"Phải thu do chia tách công ty",
+"2.500.000"
+],
+[
+"Công ty Cổ Phần Phát triển Trạm sạc V-Green",
+"Chịu sự kiểm soát chung",
+"Phải thu từ chi hộ",
+"587.772"
+],
+[
+"Công ty Vincom Retail",
+"Công ty liên kết",
+"Phải thu từ hợp đồng cho thuê tài chính",
+"49.233"
+],
+[
+"Công ty TNHH Vận hành Vincom Retail",
+"Công ty liên kết",
+"Phải thu lãi cọc hợp tác kinh doanh",
+"66.060"
+],
+[
+"Công ty TNHH Phát triển Công Viên Trung Tâm",
+"Chịu sự kiểm soát chung",
+"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh",
+"51.326"
+],
+[
+"Bên liên quan khác",
+"Các bên liên quan khác",
+"Phải thu khác",
+"11.389"
+],
+[
+"",
+"",
+"",
+"3.265.780"
+]
+],
+"text_source": [
+[
+"mineru",
+"mineru",
+"mineru",
+"gemini"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+],
+[
+"mineru",
+"mineru",
+"mineru",
+"mineru"
+]
+],
+"mineru_rows": [
+[
+0
+],
+[
+1
+],
+[
+2
+],
+[
+3
+],
+[
+4
+],
+[
+5
+],
+[
+6
+],
+[
+7
+],
+[
+8
+],
+[
+9
+],
+[
+10
+],
+[
+11
+],
+[
+12
+],
+[
+13
+],
+[
+14
+],
+[
+15
+],
+[
+16
+],
+[
+17
+],
+[
+18
+]
+]
+}
+],
+"flags": [],
+"changes": [
+{
+"kind": "table_reread",
+"table": 0
+}
+],
+"rows_joined": {
+"amounts": 16,
+"position": 3,
+"regroup": 0,
+"text": 0,
+"total": 19
+}
+}

@@ -1,0 +1,8 @@
+# Stages 1 and 3 to 6, Python 3.12 (setup.sh installs it into .venv). MinerU has its own environment: setup.sh.
+rapidocr==3.10.0
+onnxruntime==1.31.1
+pymupdf==2.1
+opencv-python-headless==5.0.0.93
+numpy==2.5.4
+google-genai==3.0.0
+pytest==9.2.0
