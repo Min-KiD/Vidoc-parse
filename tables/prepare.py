@@ -1,9 +1,10 @@
 """Stage 1, on the CPU, for any scanned PDF: upright page images and box OCR.
 
-usage: python -m tables.prepare <pdf> <doc dir> [threads]
-  <doc dir>/pages/pNN.png      200 dpi render with the PDF's /Rotate applied, then turned upright
-  <doc dir>/ocr/pNN.json       PP-OCRv5 text lines of the upright page
-  <doc dir>/orientation.json   per page: quarter turns applied and the evidence for them
+usage: python -m tables.prepare <pdf> <doc dir> [pages|ocr] [threads]
+  pages: <doc dir>/pages/pNN.png      200 dpi render with the PDF's /Rotate applied, then turned upright
+         <doc dir>/orientation.json   per page: quarter turns applied and the evidence for them
+  ocr:   <doc dir>/ocr/pNN.json       PP-OCRv6 small (Vietnamese) text lines of the upright page
+  Both by default. MinerU needs only the pages, so run_doc.sh starts it after `pages` and runs `ocr` beside it.
 
 Orientation is two questions about the page itself, no page list and no orientation model:
   sideways?     text runs along the long side of its box, so the page lies sideways when most box length is vertical
@@ -21,11 +22,13 @@ SAMPLE = 40  # lines read both ways for the upside-down question
 
 
 def engine(threads=-1):
+    """PP-OCRv6 small, Vietnamese, on onnxruntime: det 9.9 MB + rec 21 MB, fetched by rapidocr on first use."""
     from rapidocr import RapidOCR, OCRVersion, ModelType
     return RapidOCR(params={
         "Global.max_side_len": 4000, "Global.log_level": "warning",
-        "Det.ocr_version": OCRVersion.PPOCRV5, "Rec.ocr_version": OCRVersion.PPOCRV5,
-        "Det.model_type": ModelType.MOBILE, "Rec.model_type": ModelType.MOBILE,
+        "Det.ocr_version": OCRVersion.PPOCRV6, "Rec.ocr_version": OCRVersion.PPOCRV6,
+        "Det.model_type": ModelType.SMALL, "Rec.model_type": ModelType.SMALL,
+        "Det.lang_type": "vi", "Rec.lang_type": "vi",
         "Det.limit_type": "max", "Det.limit_side_len": 4000,
         "EngineConfig.onnxruntime.intra_op_num_threads": threads})
 
@@ -74,33 +77,43 @@ def ocr_lines(eng, img):
     return lines
 
 
-def main(pdf, doc, threads=-1):
+def pages(eng, pdf, doc):
+    """Every page rendered and turned upright. A page already in orientation.json is not turned again; when its image
+    is missing (a cloned repository keeps the reads, not the images) it is rendered with the recorded turns."""
     import pymupdf
     (doc / "pages").mkdir(parents=True, exist_ok=True)
-    (doc / "ocr").mkdir(exist_ok=True)
     log_file = doc / "orientation.json"
     log = json.loads(log_file.read_text()) if log_file.exists() else {}
-    eng = engine(threads)
     for n, page in enumerate(pymupdf.open(pdf), 1):
         name = f"p{n:02d}"
-        if name in log and (doc / "ocr" / f"{name}.json").exists():
-            if (doc / "pages" / f"{name}.png").exists():
-                continue
-            # the reads are kept (a cloned repository has them), the image is not: render it with the recorded turns
-            pix = page.get_pixmap(dpi=200, colorspace=pymupdf.csRGB, alpha=False)
-            img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.h, pix.w, 3)[:, :, ::-1]
-            cv2.imwrite(str(doc / "pages" / f"{name}.png"), np.ascontiguousarray(np.rot90(img, log[name]["turns"])))
+        if name in log and (doc / "pages" / f"{name}.png").exists():
             continue
         pix = page.get_pixmap(dpi=200, colorspace=pymupdf.csRGB, alpha=False)
         img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.h, pix.w, 3)[:, :, ::-1]
-        k, why = quarter_turns(eng, img)
-        img = np.ascontiguousarray(np.rot90(img, k))
-        cv2.imwrite(str(doc / "pages" / f"{name}.png"), img)
-        (doc / "ocr" / f"{name}.json").write_text(json.dumps(ocr_lines(eng, img), ensure_ascii=False))
-        log[name] = {"turns": k, "pdf_rotate": page.rotation, **why}
+        if name not in log:
+            k, why = quarter_turns(eng, img)
+            log[name] = {"turns": k, "pdf_rotate": page.rotation, **why}
+            print(name, k, why, flush=True)
+        cv2.imwrite(str(doc / "pages" / f"{name}.png"), np.ascontiguousarray(np.rot90(img, log[name]["turns"])))
         log_file.write_text(json.dumps(log, indent=0))
-        print(name, k, why, flush=True)
+
+
+def ocr(eng, doc):
+    """Box OCR of every upright page that has none yet."""
+    (doc / "ocr").mkdir(exist_ok=True)
+    for png in sorted((doc / "pages").glob("p*.png")):
+        out = doc / "ocr" / f"{png.stem}.json"
+        if not out.exists():
+            out.write_text(json.dumps(ocr_lines(eng, cv2.imread(str(png))), ensure_ascii=False))
+
+
+def main(pdf, doc, step="both", threads=-1):
+    eng = engine(threads)
+    if step in ("both", "pages"):
+        pages(eng, pdf, doc)
+    if step in ("both", "ocr"):
+        ocr(eng, doc)
 
 
 if __name__ == "__main__":
-    main(pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), *map(int, sys.argv[3:4]))
+    main(pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), *sys.argv[3:4], *map(int, sys.argv[4:5]))

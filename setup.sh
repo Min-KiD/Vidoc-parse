@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Once, after cloning: the two Python environments. Needs uv (https://docs.astral.sh/uv/). uv fetches its own Python
 # 3.12, which carries the C headers Triton (vLLM) compiles against; a system Python without its -dev package lacks them.
-#   .venv          stages 1 and 3-6 (requirements.txt; rapidocr downloads the PP-OCRv5 models on first use)
+#   .venv          stages 1 and 3-6 (requirements.txt; rapidocr downloads the PP-OCRv6 small models on first use)
 #   .venvs/mineru  MinerU for stages 2 and 3 (tables/mineru/requirements.txt, exact versions; about 8 GB; its model
 #                  weights, about 2.5 GB, are downloaded into .cache/ on the first run)
 set -euo pipefail

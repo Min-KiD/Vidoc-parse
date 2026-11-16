@@ -1,18 +1,23 @@
 """Stage 4: Gemini reads the tables of every page where MinerU found a table -> <doc>/gemini/pNN.json.
 
-usage: python -m tables.gemini_read <doc> [cap]      GEMINI_API_KEY from the environment or from .env at the repository root
+usage: python -m tables.gemini_read <doc> [cap] [workers]   GEMINI_API_KEY from the environment or from .env at the
+repository root
 
 Input is the upright page image only; Gemini never sees MinerU's output, so the two reads stay independent.
-One call per page, never repeated: every call is written to <doc>/gemini/requests.json before it is made, and the
-calls in that ledger are capped (default 100).
+Pages are read in parallel (workers, default 8). Every call is written to <doc>/gemini/requests.json before it is
+made; the calls in that ledger are capped (default 100). A call that fails or returns no text is retried, at most
+ATTEMPTS calls per page counting earlier runs, so running the stage again only tries the pages still unread.
 """
-import json, os, pathlib, re, sys, time
+import json, os, pathlib, re, sys, threading, time
+from concurrent.futures import ThreadPoolExecutor
 
 from google import genai
 from google.genai import types
 
 from tables.doc import page_png, table_pages, use
 from tables.grid import parse_amount
+
+ATTEMPTS = 3
 
 PROMPT = ('You are transcribing tables from one scanned page of a Vietnamese financial report. '
   'Return every table on the page, top to bottom. Copy each cell exactly as printed: keep dots, commas, '
@@ -75,7 +80,13 @@ def summarize(tables):
     return len(tables), rows, nums
 
 
-def main(folder, cap):
+def finish(r):
+    """Why Gemini stopped, for the log when it returned no text (MAX_TOKENS, SAFETY, ...)."""
+    c = (r.candidates or [None])[0]
+    return str(getattr(c, "finish_reason", None) or getattr(r, "prompt_feedback", None))
+
+
+def main(folder, cap, workers=8):
     OUT = use(folder) / "gemini"
     LEDGER = OUT / "requests.json"
     OUT.mkdir(parents=True, exist_ok=True)
@@ -85,29 +96,51 @@ def main(folder, cap):
     client = genai.Client(api_key=api_key())
     model, _ = pick_model(client)
     print("model:", model)
-    for p in todo:
-        if len(used) >= cap:
-            print("cap reached; stop"); break
-        if any(u["page"] == p for u in used):
-            print(p, "already requested once; not repeated"); continue
-        used.append({"page": p, "t": time.time()}); LEDGER.write_text(json.dumps(used))
-        cfg = types.GenerateContentConfig(
-            temperature=0, response_mime_type="application/json", response_json_schema=SCHEMA,
-            media_resolution=types.MediaResolution.MEDIA_RESOLUTION_HIGH, thinking_config=thinking_for(model))
+    cfg = types.GenerateContentConfig(
+        temperature=0, response_mime_type="application/json", response_json_schema=SCHEMA,
+        media_resolution=types.MediaResolution.MEDIA_RESOLUTION_HIGH, thinking_config=thinking_for(model))
+    lock = threading.Lock()
+
+    def book(p):
+        """One more call for page p, written to the ledger before it is made; False when the cap or the page's
+        attempts are used up."""
+        with lock:
+            if len(used) >= cap or sum(u["page"] == p for u in used) >= ATTEMPTS:
+                return False
+            used.append({"page": p, "t": time.time()})
+            LEDGER.write_text(json.dumps(used))
+            return True
+
+    def read(p):
         img = types.Part.from_bytes(data=page_png(p).read_bytes(), mime_type="image/png")
-        try:
-            r = client.models.generate_content(model=model, contents=[img, PROMPT], config=cfg)
-            tables = json.loads(r.text)["tables"]
-        except Exception as e:
-            print(p, "FAILED", type(e).__name__, str(e)[:300], flush=True); continue
-        u = r.usage_metadata
-        usage = {"in": u.prompt_token_count, "out": u.candidates_token_count,
-                 "thoughts": u.thoughts_token_count, "total": u.total_token_count}
-        (OUT / f"p{p:02d}.json").write_text(json.dumps({"model": model, "usage": usage, "raw": r.text, "tables": tables},
-                                                       ensure_ascii=False, indent=1))
-        print(p, summarize(tables), usage, flush=True)
+        while book(p):
+            try:
+                r = client.models.generate_content(model=model, contents=[img, PROMPT], config=cfg)
+                if r.text is None:
+                    raise ValueError(f"no text, finish reason {finish(r)}")
+                tables = json.loads(r.text)["tables"]
+            except Exception as e:
+                print(p, "FAILED", type(e).__name__, str(e)[:300], flush=True)
+                if "RECITATION" in str(e):  # Gemini's copy filter refuses this page; asking again gets the same answer
+                    return False
+                time.sleep(10 * sum(u["page"] == p for u in used))  # back off: lets rate limits and server errors pass
+                continue
+            u = r.usage_metadata
+            usage = {"in": u.prompt_token_count, "out": u.candidates_token_count,
+                     "thoughts": u.thoughts_token_count, "total": u.total_token_count}
+            (OUT / f"p{p:02d}.json").write_text(json.dumps(
+                {"model": model, "usage": usage, "raw": r.text, "tables": tables}, ensure_ascii=False, indent=1))
+            print(p, summarize(tables), usage, flush=True)
+            return True
+        return False
+
+    with ThreadPoolExecutor(workers) as pool:
+        done = list(pool.map(read, todo))
+    missing = [p for p, ok in zip(todo, done) if not ok]
+    if missing:
+        print("NOT READ", missing, "(call cap used up)" if len(used) >= cap else "(refused or failed, see FAILED lines)")
     print("requests:", len(used))
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 100)
+    main(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 100, int(sys.argv[3]) if len(sys.argv) > 3 else 8)

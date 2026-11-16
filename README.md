@@ -28,7 +28,7 @@ flowchart LR
 
 | stage | tool | role |
 |---|---|---|
-| 1 | PyMuPDF + PP-OCRv5 (RapidOCR, CPU) | turn pages upright; list every text line and amount printed on the page |
+| 1 | PyMuPDF + PP-OCRv6 small, Vietnamese (RapidOCR, CPU) | turn pages upright; list every text line and amount printed on the page |
 | 2 | MinerU2.5-Pro (GPU) | main reader: digits, dashes, columns |
 | 3 | MinerU again | reread a table from a wider crop when a check says it is incomplete |
 | 4 | Gemini Flash (API) | independent second read, used only for Vietnamese spelling and row grouping |
@@ -54,9 +54,9 @@ tables/run_doc.sh report.pdf data/report    # all six stages
 .venv/bin/python -m pytest tables/tests     # tests, no GPU or key needed
 ```
 
-Model weights are fetched by the code, not by hand: `rapidocr` downloads the PP-OCRv5 models (about 21 MB) into its package folder on first use, MinerU2.5-Pro is downloaded into `.cache/` on its first use. Everything a run writes (page images, the readers' output, the final tables) stays in `data/<name>/`; `data/`, `.cache/`, the environments and `.env` are not committed.
+Model weights are fetched by the code, not by hand: `rapidocr` downloads PP-OCRv6 small for Vietnamese (detection 9.9 MB, recognition 21 MB) into its package folder on first use, MinerU2.5-Pro is downloaded into `.cache/` on its first use. Everything a run writes (page images, the readers' output, the final tables) stays in `data/<name>/`; `data/`, `.cache/`, the environments and `.env` are not committed.
 
-Tested end to end on 2026-11-16, from a fresh clone following the steps above, on one Linux machine (Ryzen 5 5500, RTX 4060 Ti 16 GB) with the 72-page VIC report; only MinerU's weights were copied into `.cache/` instead of downloaded, to save time. Time for that report: stage 1 about 10 min (CPU), stage 2 6.3 min, stage 3 1.3 min, stage 4 7.2 min (48 Gemini calls), stages 5-6 seconds; about 25 min in all. `setup.sh` took about 22 min, almost all of it downloads.
+Tested end to end on 2026-11-16 on one Linux machine (Ryzen 5 5500, RTX 4060 Ti 16 GB) with the 72-page VIC report: about 12 min in all (724 s). Pages upright after 5 min (CPU); then MinerU (GPU) and the box OCR (CPU) run side by side and both end at 11 min; the second read of 2 flagged tables reuses the loaded model (17 s); Gemini, called 8 pages at a time from the moment MinerU is done, ends 45 s later; stages 5-6 take seconds. MinerU reads one page at a time on purpose: at 8 pages in flight it is about 2.5 min faster but table cells change from run to run (one run lost two item numbers on p10). `setup.sh` took about 22 min, almost all of it downloads.
 
 `examples/VIC/` shows what one document folder holds, for two pages of the test report VIC: a balance sheet (p06) and a note whose total row MinerU first missed and got on the second read (p55). Each stage's file is there (`ocr/`, `mineru/`, `gemini/`, `tables/`); the page images are not.
 

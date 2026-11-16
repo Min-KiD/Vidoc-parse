@@ -2,11 +2,11 @@
  "model": "gemini-3.8-flash",
  "usage": {
   "in": 1258,
-  "out": 926,
+  "out": 894,
   "thoughts": null,
-  "total": 2184
+  "total": 2152
  },
- "raw": "{\"tables\": [{\"title\": \"Các khoản phải thu và phải trả lớn với các bên liên quan tại ngày 30 tháng 9 năm 2025 như sau:\", \"unit\": \"Triệu VND\", \"columns\": [\"Mối quan hệ\", \"Nội dung nghiệp vụ\", \"Số tiền\"], \"rows\": [{\"label\": \"Phải thu ngắn hạn của khách hàng\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"\"]}, {\"label\": \"Công ty Green Future\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ bán hàng và hoạt động khác\", \"449.455\"]}, {\"label\": \"Công ty GSM\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ bán hàng\", \"2.110.078\"]}, {\"label\": \"Công ty Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh\", \"309.427\"]}, {\"label\": \"Công ty Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"\", \"Phải thu từ cung cấp dịch vụ và hoạt động khác\", \"41.346\"]}, {\"label\": \"Công ty Vận hành Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh\", \"194.426\"]}, {\"label\": \"Công ty Vận hành Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"\", \"Phải thu khác\", \"45.599\"]}, {\"label\": \"Công ty V-G\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên doanh\", \"Phải thu từ hợp đồng xây dựng\", \"140.534\"]}, {\"label\": \"Bên liên quan khác\", \"code\": null, \"note\": null, \"cells\": [\"Các bên liên quan khác\", \"Phải thu khác\", \"88.679\"]}, {\"label\": \"Phải thu ngắn hạn của khách hàng\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"3.379.544\"]}, {\"label\": \"Phải thu ngắn hạn khác\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"\"]}, {\"label\": \"Công ty Novatech\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu do chia tách công ty\", \"2.500.000\"]}, {\"label\": \"Công ty Cổ Phần Phát triển Trạm sạc V-Green\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ chi hộ\", \"587.772\"]}, {\"label\": \"Công ty Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu từ hợp đồng cho thuê tài chính\", \"49.233\"]}, {\"label\": \"Công ty TNHH Vận hành Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu lãi cọc hợp tác kinh doanh\", \"66.060\"]}, {\"label\": \"Công ty TNHH Phát triển Công Viên Trung Tâm\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh\", \"51.326\"]}, {\"label\": \"Bên liên quan khác\", \"code\": null, \"note\": null, \"cells\": [\"Các bên liên quan khác\", \"Phải thu khác\", \"11.389\"]}, {\"label\": \"Phải thu ngắn hạn khác\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"3.265.780\"]}]}]}",
+ "raw": "{\"tables\": [{\"title\": \"Các khoản phải thu và phải trả lớn với các bên liên quan tại ngày 30 tháng 9 năm 2025 như sau:\", \"unit\": \"Triệu VND\", \"columns\": [\"Mối quan hệ\", \"Nội dung nghiệp vụ\", \"Số tiền\"], \"rows\": [{\"label\": \"Phải thu ngắn hạn của khách hàng\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"\"]}, {\"label\": \"Công ty Green Future\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ bán hàng và hoạt động khác\", \"449.455\"]}, {\"label\": \"Công ty GSM\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ bán hàng\", \"2.110.078\"]}, {\"label\": \"Công ty Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh\", \"309.427\"]}, {\"label\": \"\", \"code\": null, \"note\": null, \"cells\": [\"\", \"Phải thu từ cung cấp dịch vụ và hoạt động khác\", \"41.346\"]}, {\"label\": \"Công ty Vận hành Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh\", \"194.426\"]}, {\"label\": \"\", \"code\": null, \"note\": null, \"cells\": [\"\", \"Phải thu khác\", \"45.599\"]}, {\"label\": \"Công ty V-G\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên doanh\", \"Phải thu từ hợp đồng xây dựng\", \"140.534\"]}, {\"label\": \"Bên liên quan khác\", \"code\": null, \"note\": null, \"cells\": [\"Các bên liên quan khác\", \"Phải thu khác\", \"88.679\"]}, {\"label\": \"\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"3.379.544\"]}, {\"label\": \"Phải thu ngắn hạn khác\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"\"]}, {\"label\": \"Công ty Novatech\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chúng\", \"Phải thu do chia tách công ty\", \"2.500.000\"]}, {\"label\": \"Công ty Cổ Phần Phát triển Trạm sạc V-Green\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ chi hộ\", \"587.772\"]}, {\"label\": \"Công ty Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu từ hợp đồng cho thuê tài chính\", \"49.233\"]}, {\"label\": \"Công ty TNHH Vận hành Vincom Retail\", \"code\": null, \"note\": null, \"cells\": [\"Công ty liên kết\", \"Phải thu lãi cọc hợp tác kinh doanh\", \"66.060\"]}, {\"label\": \"Công ty TNHH Phát triển Công Viên Trung Tâm\", \"code\": null, \"note\": null, \"cells\": [\"Chịu sự kiểm soát chung\", \"Phải thu từ chia sẻ lợi nhuận hợp đồng hợp tác kinh doanh\", \"51.326\"]}, {\"label\": \"Bên liên quan khác\", \"code\": null, \"note\": null, \"cells\": [\"Các bên liên quan khác\", \"Phải thu khác\", \"11.389\"]}, {\"label\": \"\", \"code\": null, \"note\": null, \"cells\": [\"\", \"\", \"3.265.780\"]}]}]}",
  "tables": [
   {
    "title": "Các khoản phải thu và phải trả lớn với các bên liên quan tại ngày 30 tháng 9 năm 2025 như sau:",
@@ -58,7 +58,7 @@
      ]
     },
     {
-     "label": "Công ty Vincom Retail",
+     "label": "",
      "code": null,
      "note": null,
      "cells": [
@@ -78,7 +78,7 @@
      ]
     },
     {
-     "label": "Công ty Vận hành Vincom Retail",
+     "label": "",
      "code": null,
      "note": null,
      "cells": [
@@ -108,7 +108,7 @@
      ]
     },
     {
-     "label": "Phải thu ngắn hạn của khách hàng",
+     "label": "",
      "code": null,
      "note": null,
      "cells": [
@@ -132,7 +132,7 @@
      "code": null,
      "note": null,
      "cells": [
-      "Chịu sự kiểm soát chung",
+      "Chịu sự kiểm soát chúng",
       "Phải thu do chia tách công ty",
       "2.500.000"
      ]
@@ -188,7 +188,7 @@
      ]
     },
     {
-     "label": "Phải thu ngắn hạn khác",
+     "label": "",
      "code": null,
      "note": null,
      "cells": [

@@ -6,7 +6,7 @@
      "Bên liên quan",
      "Mối quan hệ",
      "Nội dung nghiệp vụ",
-     "Số tiềnTriệu VND"
+     "Số tiền Triệu VND"
     ],
     [
      "Phải thu ngắn hạn của khách hàng",
@@ -119,11 +119,162 @@
    ],
    "bbox": [
     194,
-    588,
-    1489,
-    1930
+    591,
+    1492,
+    1941
    ],
    "case": "p55_t0"
+  }
+ },
+ "p57": {
+  "0": {
+   "rows": [
+    [
+     "Bên liên quan",
+     "Mối quan hệ",
+     "Nội dung nghiệp vụ",
+     "Số tiềnTriệu VND"
+    ],
+    [
+     "Chi phí phải trả ngắn hạn",
+     "",
+     "",
+     ""
+    ],
+    [
+     "Công ty Vincom Retail",
+     "Công ty liên kết",
+     "Chi phí lãi cọc phải trả",
+     "296.435"
+    ],
+    [
+     "Công ty Vận hành Vincom Retail",
+     "Công ty liên kết",
+     "Chi phí lãi cọc phải trả",
+     "397.305"
+    ],
+    [
+     "",
+     "",
+     "",
+     "693.740"
+    ],
+    [
+     "Chi phí phải trả dài hạn",
+     "",
+     "",
+     ""
+    ],
+    [
+     "Công ty Vincom Retail",
+     "Công ty liên kết",
+     "Chi phí lãi cọc phải trả",
+     "741.400"
+    ],
+    [
+     "Cổ đông lớn của Công ty con",
+     "Cổ đông lớn của Công ty con",
+     "Chi phí lãi vay trích trước",
+     "130.452"
+    ],
+    [
+     "",
+     "",
+     "",
+     "871.852"
+    ],
+    [
+     "Phải trả ngắn hạn khác",
+     "",
+     "",
+     ""
+    ],
+    [
+     "Công ty Novatech",
+     "Chịu sự kiểm soát chung",
+     "Phải trả do cung cấp dịch vụ",
+     "1.798.686"
+    ],
+    [
+     "Công ty Vincom Retail",
+     "Công ty liên kết",
+     "Nhận đặt cọc cho hoạt động chuyển nhượng dự án bất động sẵn",
+     "4.127.303"
+    ],
+    [
+     "Công ty Vận hành Vincom Retail",
+     "Công ty liên kết",
+     "Nhận đặt cọc từ hợp đồng hợp tác kinh doanh",
+     "1.090.000"
+    ],
+    [
+     "Cổ đông lớn của Công ty con",
+     "Cổ đông lớn của Công ty con",
+     "Phải trả cổ tức",
+     "987.000"
+    ],
+    [
+     "",
+     "",
+     "",
+     "8.002.989"
+    ],
+    [
+     "Phải trả dài hạn khác",
+     "",
+     "",
+     ""
+    ],
+    [
+     "Công ty Vincom Retail",
+     "Công ty liên kết",
+     "Nhận đặt cọc từ hợp đồng hợp tác kinh doanh",
+     "10.562.140"
+    ],
+    [
+     "Công ty Vận hành Vincom Retail",
+     "Công ty liên kết",
+     "Nhận đặt cọc từ hợp đồng hợp tác kinh doanh",
+     "13.640.636"
+    ],
+    [
+     "Tập đoàn Đầu tư Việt Nam",
+     "Chịu sự kiểm soát chung",
+     "Nhận đặt cọc cho hoạt động chuyển nhượng dự án bất động sẵn",
+     "194.100"
+    ],
+    [
+     "",
+     "",
+     "",
+     "24.396.876"
+    ],
+    [
+     "Vay dài hạn",
+     "",
+     "",
+     ""
+    ],
+    [
+     "Cổ đông lớn của Công ty con",
+     "Cổ đông lớn của Công ty con",
+     "Vay dài hạn",
+     "938.000"
+    ],
+    [
+     "",
+     "",
+     "",
+     "938.000"
+    ]
+   ],
+   "bbox": [
+    162,
+    320,
+    1492,
+    1982
+   ],
+   "case": "p57_t0"
   }
  }
 }

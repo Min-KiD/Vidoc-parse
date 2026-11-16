@@ -1,10 +1,20 @@
 {
 "p06": {
 "turns": 0,
-"pdf_rotate": 0
+"pdf_rotate": 0,
+"vertical": 203,
+"horizontal": 18107,
+"lines": 40,
+"as_is": 39.29,
+"turned_180": 26.72
 },
 "p55": {
 "turns": 0,
-"pdf_rotate": 0
+"pdf_rotate": 0,
+"vertical": 0,
+"horizontal": 25761,
+"lines": 40,
+"as_is": 39.33,
+"turned_180": 26.38
 }
 }

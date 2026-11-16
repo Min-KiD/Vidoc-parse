@@ -36,7 +36,7 @@ flowchart TD
 
 | stage | does | tool | where | script | writes |
 |---|---|---|---|---|---|
-| 1 | render pages at 200 dpi, turn them upright, read text lines with positions | pdf render, PP-OCRv5 (RapidOCR) | local CPU, about 4 s per page | `tables/prepare.py` | `pages/pNN.png`, `ocr/pNN.json`, `orientation.json` |
+| 1 | render pages at 200 dpi, turn them upright, read text lines with positions | pdf render, PP-OCRv6 small, Vietnamese (RapidOCR) | local CPU, about 4 s per page | `tables/prepare.py` | `pages/pNN.png`, `ocr/pNN.json`, `orientation.json` |
 | 2 | read each page into Markdown with HTML tables and block boxes | MinerU2.5-Pro | GPU, 3.6 s per page | `tables/run_doc.sh`, `tables/mineru/` | `mineru/pNN.md`, `pNN.raw.json` |
 | 3 | find tables whose first read is incomplete, read them again, keep the better read | checks + MinerU | local + GPU | `tables/reread.py` | `reread/`, `mineru/reread.json` |
 | 4 | read each table page as structured tables | Gemini 3.8 Flash, about $0.005 per page | API | `tables/gemini_read.py` | `gemini/pNN.json` |

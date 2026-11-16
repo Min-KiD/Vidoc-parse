@@ -5,9 +5,9 @@
 "title": "Các khoản phải thu và phải trả lớn với các bên liên quan tại ngày 30 tháng 9 năm 2025 như sau:",
 "bbox": [
 194,
-588,
-1489,
-1930
+591,
+1492,
+1941
 ],
 "header_rows": [
 0,
@@ -94,7 +94,7 @@
 ],
 [
 "Công ty Novatech",
-"Chịu sự kiểm soát chung",
+"Chịu sự kiểm soát chúng",
 "Phải thu do chia tách công ty",
 "2.500.000"
 ],
@@ -210,7 +210,7 @@
 ],
 [
 "mineru",
-"mineru",
+"gemini",
 "mineru",
 "mineru"
 ],
