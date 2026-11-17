@@ -21,10 +21,13 @@ import json, os, pathlib, sys
 import cv2
 import numpy as np
 
-SAMPLE = 10  # longest lines read both ways for the upside-down question. Measured on 162 pages of two reports, each
-# also turned 180 degrees: from 1 line up every page is decided right; the right way scores 0.97 per line, the wrong
-# way 0.65, and at 10 lines no page is within 0.24 per line. Lines that vote the wrong way: 4 of 3212 at 10, 35 of
-# 12327 at 40 (short marks and logos). Same turns as 40 on every VIC page, stage 1 pages step 138 s instead of 191 s.
+SAMPLE = 10  # longest lines read both ways for the upside-down question
+WORDS = 3  # of them, at least this many must read as words; else reading goes on down the list (at most 4 x SAMPLE)
+# Measured on 162 pages of two reports, each also turned 180 degrees, 40 lines read per page: every page is decided
+# right from 1 line up; the right way scores 0.97 per line, the wrong way 0.65. The lines that vote the wrong way are
+# marks and logos (no letters either way up, junk the other) and a few short near-symmetric numbers ("59 - 68"), so
+# only lines with 3 letters or more vote. Every page had 3 such lines among its 10 longest; smallest margin then
+# 0.28 per line. Same turns as 40 lines on every VIC page; stage 1 pages step 138 s instead of 191 s.
 
 
 def engine(threads=-1):
@@ -59,16 +62,25 @@ def quarter_turns(eng, img):
     if k:
         img = np.rot90(img, 1)
         boxes = text_boxes(eng, img)
-    lines = sorted((b for b in boxes if b[0] > b[1]), reverse=True)[:SAMPLE]
-    score = [0.0, 0.0]
-    for w, h, x0, y0, x1, y1 in lines:
+    score, every, read, words = [0.0, 0.0], [0.0, 0.0], 0, 0  # words only; every line read
+    for w, h, x0, y0, x1, y1 in sorted((b for b in boxes if b[0] > b[1]), reverse=True):
+        if read >= SAMPLE and (words >= WORDS or read >= 4 * SAMPLE):
+            break
         crop = np.ascontiguousarray(img[max(0, int(y0) - 2):int(y1) + 3, max(0, int(x0) - 2):int(x1) + 3])
-        for turned in (0, 1):
-            r = eng(np.ascontiguousarray(np.rot90(crop, 2)) if turned else crop, use_det=False, use_cls=False, use_rec=True)
-            score[turned] += sum(r.scores or [])
+        reads = [eng(np.ascontiguousarray(np.rot90(crop, 2)) if turned else crop, use_det=False, use_cls=False,
+                     use_rec=True) for turned in (0, 1)]
+        s = [sum(r.scores or []) for r in reads]
+        best = " ".join(reads[s[1] > s[0]].txts or [])
+        read += 1
+        every = [every[0] + s[0], every[1] + s[1]]
+        if sum(ch.isalpha() for ch in best) >= 3:  # a word, read the way up that scores better
+            words += 1
+            score = [score[0] + s[0], score[1] + s[1]]
+    if words < WORDS:  # a page with almost no words: every line read votes
+        score = every
     if score[1] > score[0]:
         k += 2
-    return k, {"vertical": round(vertical), "horizontal": round(horizontal), "lines": len(lines),
+    return k, {"vertical": round(vertical), "horizontal": round(horizontal), "lines": read, "words": words,
                "as_is": round(score[0], 2), "turned_180": round(score[1], 2)}
 
 
