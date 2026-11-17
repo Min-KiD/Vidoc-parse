@@ -21,7 +21,10 @@ import json, os, pathlib, sys
 import cv2
 import numpy as np
 
-SAMPLE = 40  # lines read both ways for the upside-down question
+SAMPLE = 10  # longest lines read both ways for the upside-down question. Measured on 162 pages of two reports, each
+# also turned 180 degrees: from 1 line up every page is decided right; the right way scores 0.97 per line, the wrong
+# way 0.65, and at 10 lines no page is within 0.24 per line. Lines that vote the wrong way: 4 of 3212 at 10, 35 of
+# 12327 at 40 (short marks and logos). Same turns as 40 on every VIC page, stage 1 pages step 138 s instead of 191 s.
 
 
 def engine(threads=-1):
