@@ -18,7 +18,7 @@ flowchart LR
   PDF[scanned PDF] --> S1[1 upright pages<br/>+ box OCR]
   S1 --> S2[2 MinerU<br/>reads tables]
   S2 --> S3[3 second read of<br/>flagged tables]
-  S1 --> S4[4 Gemini<br/>reads tables]
+  S2 --> S4[4 Gemini<br/>reads tables]
   S3 --> S5[5 rules join the reads<br/>repair + flag]
   S4 --> S5
   S1 --> S5
