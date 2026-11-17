@@ -63,4 +63,4 @@ Tested end to end on 2026-11-17 on one Linux machine with one GPU and one CPU (R
 ## More
 
 - `architecture_design.md`: the pipeline in detail, every rule and flag, the output format, what joining with the text part still needs.
-- `FINDINGS.md`: what was tried, what worked, what not to try again.
+- `FINDINGS.md`: what the pipeline rests on, what was settled and what is still open, in short.

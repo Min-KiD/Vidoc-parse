@@ -1,8 +1,8 @@
-"""Coverage: an amount that box OCR reads on a page and that no table cell holds (FINDINGS E11). It is the one check
+"""Coverage: an amount that box OCR reads on a page and that no table cell holds. It is the one check
 that sees a row, a column or a table the reader left out. No answer key, no model but the box OCR.
 
 An amount in a sentence is kept apart from an amount on a line of its own: a report also writes amounts in its
-running text, and those belong to no table (FINDINGS E12).
+running text, and those belong to no table.
 """
 import re
 from collections import Counter
@@ -39,7 +39,7 @@ def uncovered(seen, cells):
 
 def in_sentence(text):
     """Running text and not a table row: the OCR line has 12 letters or more besides its amounts. Of 3778 amounts
-    that the tables of three documents hold, box OCR reads 8 in such a line (FINDINGS E12)."""
+    that the tables of three documents hold, box OCR reads 8 in such a line."""
     return sum(ch.isalpha() for ch in AMOUNT.sub("", text)) >= 12
 
 

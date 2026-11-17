@@ -1,6 +1,6 @@
 # Architecture: tables from a scanned financial report
 
-State on 2026-11-16. This describes the final pipeline in `tables/`, in the order the data flows. Experiments and their numbers are in `FINDINGS.md` (E1 to E14); this file only explains how the parts fit.
+State on 2026-11-17. This describes the final pipeline in `tables/`, in the order the data flows. What it rests on, in short, is in `FINDINGS.md`; this file explains how the parts fit.
 
 ## 0. Read this first: what the output is today
 
