@@ -1,19 +1,22 @@
 """Stage 1, on the CPU, for any scanned PDF: upright page images and box OCR.
 
-usage: python -m tables.prepare <pdf> <doc dir> [pages|ocr] [threads]
-  pages: <doc dir>/pages/pNN.png      200 dpi render with the PDF's /Rotate applied, then turned upright
+usage: python -m tables.prepare <pdf> <doc dir> [pages|ocr|both] [jobs] [threads]
+  pages: <doc dir>/pages/pNN.png      200 dpi render with the PDF's /Rotate applied, then turned upright; each image
+                                      appears under its name only when complete, and pages/.done when all are there
          <doc dir>/orientation.json   per page: quarter turns applied and the evidence for them
   ocr:   <doc dir>/ocr/pNN.json       PP-OCRv6 small (Vietnamese) text lines of the upright page
-  Both by default. MinerU needs only the pages, so run_doc.sh starts it after `pages` and runs `ocr` beside it.
+  Both by default. MinerU reads each page image as it appears, so run_doc.sh starts it before `pages` and runs `ocr`
+  beside it.
 
 Orientation is two questions about the page itself, no page list and no orientation model:
   sideways?     text runs along the long side of its box, so the page lies sideways when most box length is vertical
   upside down?  the longest lines are read as they are and turned by 180 degrees; the better reading wins
 
-threads: CPU threads for the OCR models. By default each process takes every core, so two runs side by side without
-it are far slower than one after the other.
+jobs: pages done at once, one process each (default: a third of the CPU threads, 4 on a 6-core/12-thread CPU: with
+one per two threads, stage 1 took the cores MinerU needs to keep the GPU fed); threads: onnxruntime threads per
+process (default 1).
 """
-import json, pathlib, sys
+import json, os, pathlib, sys
 
 import cv2
 import numpy as np
@@ -77,43 +80,74 @@ def ocr_lines(eng, img):
     return lines
 
 
-def pages(eng, pdf, doc):
-    """Every page rendered and turned upright. A page already in orientation.json is not turned again; when its image
-    is missing (a cloned repository keeps the reads, not the images) it is rendered with the recorded turns."""
+_eng = _pdf = None  # per worker process
+
+
+def _start(pdf, threads):
+    global _eng, _pdf
     import pymupdf
-    (doc / "pages").mkdir(parents=True, exist_ok=True)
+    _eng, _pdf = engine(threads), (pymupdf.open(pdf) if pdf else None)
+
+
+def _upright(job):
+    """Render page n, turn it upright (by the recorded turns when known) and write it; the image appears under its
+    final name only when complete, because MinerU starts on every page image it sees."""
+    import pymupdf
+    n, png, known = job
+    page = _pdf[n - 1]
+    pix = page.get_pixmap(dpi=200, colorspace=pymupdf.csRGB, alpha=False)
+    img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.h, pix.w, 3)[:, :, ::-1]
+    if known is None:
+        k, why = quarter_turns(_eng, img)
+        known = {"turns": k, "pdf_rotate": page.rotation, **why}
+    tmp = png.with_name(f".tmp_{png.name}")
+    cv2.imwrite(str(tmp), np.ascontiguousarray(np.rot90(img, known["turns"])))
+    tmp.rename(png)
+    return png.stem, known
+
+
+def _box_ocr(png):
+    out = png.parent.parent / "ocr" / f"{png.stem}.json"
+    out.write_text(json.dumps(ocr_lines(_eng, cv2.imread(str(png))), ensure_ascii=False))
+
+
+def pages(pdf, doc, jobs, threads):
+    """Every page rendered and turned upright, then <doc>/pages/.done. A page already in orientation.json is not turned
+    again; when its image is missing (a cloned repository keeps the reads, not the images) it is rendered with the
+    recorded turns."""
+    import pymupdf
+    from multiprocessing import Pool
+    d = doc / "pages"
+    d.mkdir(parents=True, exist_ok=True)
     log_file = doc / "orientation.json"
     log = json.loads(log_file.read_text()) if log_file.exists() else {}
-    for n, page in enumerate(pymupdf.open(pdf), 1):
-        name = f"p{n:02d}"
-        if name in log and (doc / "pages" / f"{name}.png").exists():
-            continue
-        pix = page.get_pixmap(dpi=200, colorspace=pymupdf.csRGB, alpha=False)
-        img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.h, pix.w, 3)[:, :, ::-1]
-        if name not in log:
-            k, why = quarter_turns(eng, img)
-            log[name] = {"turns": k, "pdf_rotate": page.rotation, **why}
-            print(name, k, why, flush=True)
-        cv2.imwrite(str(doc / "pages" / f"{name}.png"), np.ascontiguousarray(np.rot90(img, log[name]["turns"])))
-        log_file.write_text(json.dumps(log, indent=0))
+    todo = [(n, d / f"p{n:02d}.png", log.get(f"p{n:02d}")) for n in range(1, len(pymupdf.open(pdf)) + 1)]
+    todo = [j for j in todo if j[2] is None or not j[1].exists()]
+    with Pool(jobs, _start, (pdf, threads)) as pool:
+        for name, known in pool.imap_unordered(_upright, todo):
+            if name not in log:
+                print(name, known, flush=True)
+            log[name] = known
+            log_file.write_text(json.dumps(dict(sorted(log.items())), indent=0))
+    (d / ".done").touch()
 
 
-def ocr(eng, doc):
+def ocr(doc, jobs, threads):
     """Box OCR of every upright page that has none yet."""
+    from multiprocessing import Pool
     (doc / "ocr").mkdir(exist_ok=True)
-    for png in sorted((doc / "pages").glob("p*.png")):
-        out = doc / "ocr" / f"{png.stem}.json"
-        if not out.exists():
-            out.write_text(json.dumps(ocr_lines(eng, cv2.imread(str(png))), ensure_ascii=False))
+    todo = [png for png in sorted((doc / "pages").glob("p*.png")) if not (doc / "ocr" / f"{png.stem}.json").exists()]
+    with Pool(jobs, _start, (None, threads)) as pool:
+        list(pool.imap_unordered(_box_ocr, todo))
 
 
-def main(pdf, doc, step="both", threads=-1):
-    eng = engine(threads)
+def main(pdf, doc, step="both", jobs=None, threads=1):
+    jobs = jobs or max(1, (os.cpu_count() or 3) // 3)
     if step in ("both", "pages"):
-        pages(eng, pdf, doc)
+        pages(pdf, doc, jobs, threads)
     if step in ("both", "ocr"):
-        ocr(eng, doc)
+        ocr(doc, jobs, threads)
 
 
 if __name__ == "__main__":
-    main(pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), *sys.argv[3:4], *map(int, sys.argv[4:5]))
+    main(pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), *sys.argv[3:4], *map(int, sys.argv[4:6]))

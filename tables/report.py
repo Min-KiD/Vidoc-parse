@@ -7,7 +7,7 @@ import json, sys
 from collections import Counter
 
 from tables import forms as F
-from tables.doc import page_numbers, use
+from tables.doc import page_numbers, table_pages, use
 from tables.grid import ctype, nws
 
 
@@ -22,7 +22,7 @@ def listed(pages, kind, fields):
 
 
 def main(folder):
-    d = use(folder)
+    root = d = use(folder)
     pages = {}
     for p in page_numbers():
         f = d / "tables" / f"p{p:02d}.json"
@@ -40,6 +40,10 @@ def main(folder):
     print(f"- what the rules did: {dict(Counter(c['kind'] for d in pages.values() for c in d['changes']))}")
     flags = Counter(f["kind"] for d in pages.values() for f in d["flags"])
     print(f"- flags: {dict(flags)}")
+    models = sorted({json.loads(f.read_text())["model"] for f in (root / "gemini").glob("p*.json")})
+    unread = [p for p in table_pages() if not (root / "gemini" / f"p{p:02d}.json").exists()]
+    print(f"- Gemini model {', '.join(models) or 'none'}; pages with a table Gemini did not read: {unread or 'none'}"
+          + (" (there the spelling is MinerU's and no Gemini check ran)" if unread else ""))
     for kind in ("amount_mismatch", "blank_or_dash", "gemini_only_row", "malformed"):
         for p, d in pages.items():
             for f in d["flags"]:

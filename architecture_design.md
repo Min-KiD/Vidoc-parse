@@ -23,16 +23,20 @@ State on 2026-11-16. This describes the final pipeline in `tables/`, in the orde
 ```mermaid
 flowchart TD
   PDF[scanned PDF] --> S1[Stage 1: upright page images + box OCR<br/>CPU, local]
-  S1 --> S2[Stage 2: MinerU reads every page<br/>GPU]
+  S1 -->|each page as it is turned| S2[Stage 2: MinerU reads every page<br/>GPU]
   S2 --> S3{Stage 3: checks on MinerU's tables<br/>amount missing? no label column?}
+  S1 -->|box OCR| S3
   S3 -->|flagged table| S3b[MinerU reads that table again<br/>from a wider crop]
-  S3b --> S4
-  S3 -->|fine| S4[Stage 4: Gemini reads each table page<br/>API]
-  S4 --> S5[Stage 5: workflow rules<br/>repair, join, spelling, flags]
+  S2 -->|each page with a table| S4[Stage 4: Gemini reads each table page<br/>API]
+  S3 --> S5[Stage 5: workflow rules<br/>repair, join, spelling, flags]
+  S3b --> S5
+  S4 --> S5
   S5 --> OUT[per page JSON: tables + flags]
   OUT --> S6[Stage 6: report<br/>counts and every flag]
   OUT -.not built.-> MD[document Markdown]
 ```
+
+The arrows are what each stage needs; stages without an arrow between them run at the same time (section 7).
 
 | stage | does | tool | where | script | writes |
 |---|---|---|---|---|---|
@@ -150,14 +154,28 @@ A flag is a place a person should look. It never changes a cell.
 | flags | 48 (48 pages) | 88 | 166 |
 
 - VIC is the file the rules were written on, so its score is the best case.
+- The 8 wrong cells are with the Gemini reads made on 2026-11-10/11 and kept since. Gemini does not answer the same way twice: four fresh reads of VIC on 2026-11-16 gave 16 to 21 wrong cells, every extra one a tone mark, capital or punctuation (3 content errors in every run). MinerU at one page in flight gave the same score in every run.
 - DXG and NVL have no answer key. The sample bounds the error rate, it does not measure it: a kind of fault not met in 60 rows can still be in about 5% of rows.
 - The sample reader is a model reading images, not a person. On VIC it equals the human-checked key in 173 of 173 cells.
+
+Speed on one machine with one GPU and one CPU (RTX 4060 Ti 16 GB, Ryzen 5 5500 6 cores / 12 threads), VIC 72 pages, scored with the same kept Gemini reads:
+
+| setting | wall time | wrong cells (content) |
+|---|---|---|
+| stages one after the other (before 2026-11-16) | about 25 min | 8 (3) |
+| stages side by side, stage 1 with half the CPU threads | 465 s | 8 (3) |
+| same, stage 1 with a third of the threads (default) | 402-404 s | 8 (3) |
+| MinerU alone, 1 / 2 / 4 / 8 pages in flight, 3 runs each | 300 / 191 / 147 / 127 s | 8 (3) / 10 (3) / up to 12 (5) / up to 10 (3) |
+
+- MinerU reads one page at a time by default: more pages at once is faster but changes MinerU's reads from run to run and added content errors in some runs. Even at one page, one run of three differed on one table (p65).
+- Stage 1 shares the CPU with MinerU, which needs it to keep the GPU fed. With half the threads MinerU took 4.9 s per page instead of 4.1; with a third, the box OCR ends about 20 s after MinerU. On another machine `PREP_JOBS` is the one setting worth trying: raise it when `[..] box OCR done` comes long after `MinerU read`.
 
 ## 6. Known limits
 
 - **Flagged, not repaired:** a value column MinerU does not read (NVL p11, 19 amounts); a label column the second read does not bring back (DXG p44); lines under a table that are not a total (DXG p38); two text lines in one cell (DXG p39, p43).
 - **No flag sees it:** an empty printed column that MinerU drops, which shifts the header by one column (NVL p13); a heading that spans the row, placed in the first column; a dropped dash that Gemini also dropped.
 - **Capitals:** both readers misread them; no rule decides.
+- **Gemini may refuse a page** (finish reason RECITATION, its filter against copying published text). VIC p61 was read on 2026-11-11 and refused in every run of 2026-11-16. On such a page the spelling is MinerU's and no Gemini check ran; `report.md` names these pages.
 - **Rules 1 and 3** fired on VIC only. They did nothing on the other two files.
 - **Form checks** know the Vietnamese statement forms (Circular 200/202). Other tables have only the generic checks.
 - **Unseen files:** DXG and NVL were looked at before the last rules were written. No third file has been run.
@@ -169,7 +187,17 @@ A flag is a place a person should look. It never changes a cell.
 tables/run_doc.sh <report.pdf> data/<name>
 ```
 
-`setup.sh` makes two environments with uv: `.venv` (requirements.txt, stages 1 and 3-6) and `.venvs/mineru` (MinerU 4.2.0 with vLLM 0.20.2, exact versions in `tables/mineru/requirements.txt`, stages 2 and 3). Every cache and MinerU's weights go to `.cache/` (`tables/mineru/env.sh`). `run_doc.sh` reads `.env` (settings listed in `.env.example`) and runs, in order: `python -m tables.prepare`, MinerU (`tables/mineru/run_mineru.sh`), `python -m tables.reread crops|compare|accept` with a second MinerU run on the crops, `python -m tables.gemini_read`, `python -m tables.workflow`, `python -m tables.report`. On a shared GPU, `GPU_LOCK` names a lock file the other jobs take with flock; MinerU then takes it too and waits until the GPU memory is free. Each step skips the pages it already did, so a stopped run is resumed by running it again. Every module also runs on its own with the document folder as argument. The script stops with a message when MinerU fails or reads no page, and warns when Gemini hits its call cap or fails on a page.
+`setup.sh` makes two environments with uv: `.venv` (requirements.txt, stages 1 and 3-6; it also fetches PP-OCRv6 small) and `.venvs/mineru` (MinerU 4.2.0 with vLLM 0.20.2, exact versions in `tables/mineru/requirements.txt`, stages 2 and 3). Every cache and MinerU's weights go to `.cache/` (`tables/mineru/env.sh`). `run_doc.sh` reads `.env` (settings listed in `.env.example`).
+
+The stages are numbered by what they need, not run one after the other. `run_doc.sh` starts three processes at once:
+
+- **MinerU** (`tables/mineru/run_mineru.sh`, GPU) loads its model and reads each page image the moment stage 1 writes it (`--until pages/.done`). After the last page it waits, model loaded, for the crops of stage 3 and reads them too: the model is loaded once per document.
+- **Gemini** (`python -m tables.gemini_read --follow`, network, 8 calls at a time) reads each page as soon as MinerU's `pNN.md` shows a table on it.
+- **Stage 1** (`python -m tables.prepare`, CPU, one process per three CPU threads by default (`PREP_JOBS`), so that MinerU keeps enough CPU to feed the GPU) turns the pages upright; when all are written, the box OCR of every page starts.
+
+When MinerU has read every page and the box OCR is done, `python -m tables.reread crops` cuts the crops of stage 3; MinerU reads them; `compare` and `accept` keep the better reads. When Gemini is done, `python -m tables.workflow` and `python -m tables.report` write the output. MinerU reads one page at a time on purpose (`MINERU_JOBS`, default 1): with several in flight the reads change from run to run (section 5).
+
+On a shared GPU, `GPU_LOCK` names a lock file the other jobs take with flock; MinerU then takes it too and waits until the GPU memory is free. Each step skips the pages it already did, so a stopped run is resumed by running it again; a run of a finished document takes seconds and does not load MinerU's model. A run that fails or is interrupted stops every process it started. Every module also runs on its own with the document folder as argument. The script stops with a message when a stage fails or MinerU reads no page, and warns when Gemini leaves a page unread.
 
 VIC page 4 is not in the output: MinerU sees no table there (only PaddleOCR-VL did, in the experiments), so VIC has 48 pages of tables, not 49.
 
