@@ -53,7 +53,7 @@ All paths are under the document's folder, `data/<name>/`. Shared code: `tables/
 
 ### Stage 1: pages and box OCR
 
-- Each page is rendered to a PNG and turned upright. Direction is decided from the page itself: text runs along the long side of its boxes, so a page whose boxes are mostly vertical lies sideways; then the longest lines are read both ways up and the better reading wins. No page list, no orientation model.
+- Each page is rendered to a PNG and turned upright. Direction is decided from the page itself: text runs along the long side of its boxes, so a page whose boxes are mostly vertical lies sideways; then the 10 longest lines are read as they are and turned by 180 degrees, and the way up with the higher recognition scores wins. Only lines that read as words (3 letters or more) vote, so marks, logos and near-symmetric numbers such as `59 - 68` do not; more lines are read only when fewer than 3 of the 10 are words. No page list, no orientation model.
 - Box OCR gives every text line with its position. It is a poor reader of tables (it has no notion of cells) but it reliably lists the amounts printed on a page.
 
 ### Stage 2: MinerU
